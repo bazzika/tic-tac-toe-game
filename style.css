@@ -1,0 +1,162 @@
+#title {
+    font-family: sans-serif, cursive;
+    font-size: 4em;
+    text-align:center;
+    color:#669;
+}
+
+.modal {
+    margin-top: 4em;
+}
+
+#ttt-box {
+    position: relative;
+    height:304px;
+    width:304px;
+    margin:30px auto;
+    background-color: #fff;
+    border: solid #669 4px;
+    border-radius:20%;
+}
+
+#l1,#l2,#l3,#l4 {
+    position: absolute;
+    background-color:#669;
+}
+
+#l1 {
+    left: 99px;
+    width:3px;
+    height:296px;
+}
+#l2 {
+    left: 199px;
+    width:3px;
+    height:296px;
+}
+#l3 {
+    top: 99px;
+    width:296px;
+    height:3px;
+}
+#l4 {
+    top: 199px;
+    width:296px;
+    height:3px;
+}
+
+#win1,#win2,#win3,#win4,#win5,#win6,#win7,#win8 {
+    position: absolute;
+    background-color:#000;
+    display:none;
+}
+
+#win1 {
+    left: 50px;
+    width:3px;
+    height:296px;
+}
+#win2 {
+    left: 150px;
+    width:3px;
+    height:296px;
+}
+#win3 {
+    left: 250px;
+    width:3px;
+    height:296px;
+}
+#win4 {
+    top: 50px;
+    width:296px;
+    height:3px;
+}
+#win5 {
+    top: 150px;
+    width:296px;
+    height:3px;
+}
+#win6 {
+    top: 250px;
+    width:296px;
+    height:3px;
+
+}
+#win7 {
+    top: 145px;
+    left:-40px;
+    width:375px;
+    height:3px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+#win8 {
+    top: 150px;
+    left:-35px;
+    width:375px;
+    height:3px;
+    -ms-transform: rotate(-45deg); /* IE 9 */
+    -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+    transform: rotate(-45deg);
+}
+
+#cell_1,#cell_2,#cell_3,#cell_4,#cell_5,#cell_6,#cell_7,#cell_8,#cell_9 {
+    cursor:pointer;
+    position:absolute;
+    width:99px;
+    height:99px;
+    font-size:70px;
+    text-align:center;
+    color:#669;
+}
+
+#cell_1 {
+    top:0;
+    left:0;
+}
+#cell_2 {
+    top:0;
+    left:101px;
+}
+#cell_3 {
+    top:0;
+    left:201px;
+}
+#cell_4 {
+    top:101px;
+    left:0;
+}
+#cell_5 {
+    top:101px;
+    left:101px;
+}
+#cell_6 {
+    top:101px;
+    left:201px;
+}
+#cell_7 {
+    top:201px;
+    left:0;
+}
+#cell_8 {
+    top:201px;
+    left:101px;
+}
+#cell_9 {
+    top:201px;
+    left:201px;
+}
+
+#result {
+    margin: 40px auto;
+    text-align:center;
+    font-size:2em;
+    color:#669;
+    font-family: sans-serif, cursive;
+}
+
+
+footer {
+    color: #669
+}
