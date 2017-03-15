@@ -1,162 +1,127 @@
-#title {
-    font-family: sans-serif, cursive;
-    font-size: 4em;
-    text-align:center;
-    color:#669;
+body {
 }
 
-.modal {
-    margin-top: 4em;
+.position-1, .position-2, .position-4,
+.position-5, .position-7, .position-8 {
+    border-right: 4px ridge white;
 }
 
-#ttt-box {
+.position-1, .position-2, .position-3,
+.position-4, .position-5, .position-6 {
+    border-bottom: 4px ridge white;
+}
+
+.gameboard {
+    font-family: 'Source Code Pro', sans-serif;
+    margin-right: auto;
+    margin-left: auto;
     position: relative;
-    height:304px;
-    width:304px;
-    margin:30px auto;
-    background-color: #fff;
-    border: solid #669 4px;
-    border-radius:20%;
+    text-align: center;
+    width: 90%;
 }
-
-#l1,#l2,#l3,#l4 {
+@media (min-width: 768px) {
+    .gameboard {
+        width: 70%;
+    }
+}
+@media (min-width: 992px) {
+    .gameboard {
+        width: 50%;
+    }
+}
+.gameboard .overlay {
+    border-radius: 4px;
+    color: white;
+    display: none;
     position: absolute;
-    background-color:#669;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #DFE3E6;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    z-index: 10;
 }
-
-#l1 {
-    left: 99px;
-    width:3px;
-    height:296px;
+.gameboard .overlay .overlay-content {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
-#l2 {
-    left: 199px;
-    width:3px;
-    height:296px;
+.gameboard .overlay h2 {
+    color: #181C1F;
+    text-shadow: 2px 2px #FFF;
+    font-family: 'Teko', sans-serif;
+    font-size: 12vw;
+    margin-top: 0;
+    margin-bottom: 0;
 }
-#l3 {
-    top: 99px;
-    width:296px;
-    height:3px;
+@media (min-width: 768px) {
+    .gameboard .overlay h2 {
+        font-size: 70px;
+    }
 }
-#l4 {
-    top: 199px;
-    width:296px;
-    height:3px;
+.gameboard .overlay button {
+    background-color: rgba(8, 8, 8, 0.4);
+    border-radius: 4px;
+    border: 1px solid black;
+    font-size: 8vw;
+    font-weight: 600;
+    margin: 10px;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
-
-#win1,#win2,#win3,#win4,#win5,#win6,#win7,#win8 {
-    position: absolute;
-    background-color:#000;
-    display:none;
+@media (min-width: 768px) {
+    .gameboard .overlay button {
+        font-size: 80px;
+        margin: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
-
-#win1 {
-    left: 50px;
-    width:3px;
-    height:296px;
+.gameboard .overlay button:hover {
+    color: green;
+    background-color: white;
 }
-#win2 {
-    left: 150px;
-    width:3px;
-    height:296px;
+.gameboard .row {
+    height: 33.33333333%;
+    margin-left: 0;
+    margin-right: 0;
 }
-#win3 {
-    left: 250px;
-    width:3px;
-    height:296px;
+.gameboard .row .ttt-space {
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 }
-#win4 {
-    top: 50px;
-    width:296px;
-    height:3px;
+.gameboard .row .ttt-space:hover {
+    cursor: pointer;
 }
-#win5 {
-    top: 150px;
-    width:296px;
-    height:3px;
+.gameboard .row .ttt-space p {
+    display: block;
+    font-size: 16vw;
+    font-weight: 600;
+    margin: 0;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
-#win6 {
-    top: 250px;
-    width:296px;
-    height:3px;
-
+@media (min-width: 768px) {
+    .gameboard .row .ttt-space p {
+        font-size: 90px;
+    }
 }
-#win7 {
-    top: 145px;
-    left:-40px;
-    width:375px;
-    height:3px;
-    -ms-transform: rotate(45deg); /* IE 9 */
-    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
-    transform: rotate(45deg);
+.gameboard .row .ttt-space p.player {
+    color: green;
 }
-#win8 {
-    top: 150px;
-    left:-35px;
-    width:375px;
-    height:3px;
-    -ms-transform: rotate(-45deg); /* IE 9 */
-    -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
-    transform: rotate(-45deg);
+.gameboard .row .ttt-space p.computer {
+    color: red;
 }
-
-#cell_1,#cell_2,#cell_3,#cell_4,#cell_5,#cell_6,#cell_7,#cell_8,#cell_9 {
-    cursor:pointer;
-    position:absolute;
-    width:99px;
-    height:99px;
-    font-size:70px;
-    text-align:center;
-    color:#669;
-}
-
-#cell_1 {
-    top:0;
-    left:0;
-}
-#cell_2 {
-    top:0;
-    left:101px;
-}
-#cell_3 {
-    top:0;
-    left:201px;
-}
-#cell_4 {
-    top:101px;
-    left:0;
-}
-#cell_5 {
-    top:101px;
-    left:101px;
-}
-#cell_6 {
-    top:101px;
-    left:201px;
-}
-#cell_7 {
-    top:201px;
-    left:0;
-}
-#cell_8 {
-    top:201px;
-    left:101px;
-}
-#cell_9 {
-    top:201px;
-    left:201px;
-}
-
-#result {
-    margin: 40px auto;
-    text-align:center;
-    font-size:2em;
-    color:#669;
-    font-family: sans-serif, cursive;
-}
-
-
 footer {
     color: #669
 }

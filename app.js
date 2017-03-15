@@ -1,267 +1,238 @@
-choices = {
-  0:'#cell_1',
-  1:'#cell_2',
-  2:'#cell_3',
-  3:'#cell_4',
-  4:'#cell_5',
-  5:'#cell_6',
-  6:'#cell_7',
-  7:'#cell_8',
-  8:'#cell_9'
-}
+$(function() {
 
-function getGrid() {
-  var divs = [];
-  for (var i=0;i<9;i++) {
-    divs.push($(choices[i]).html());
-  }
-  return divs;
-}
+  function Game() {
+    var currentPosition = this,
+      moveCount,
+      running,
+      playerPiece,
+      computerPiece,
+      playerTurn,
+      playerMoves,
+      computerMoves,
+      winner,
+      overlay = $(".overlay"),
+      chooseButtons = $(".overlay button"),
+      spaces = $(".ttt-space"),
+      announce = $(".game-title"),
+      winConditions = [[1,2,3], [4,5,6], [7,8,9],
+        [1,4,7], [2,5,8], [3,6,9],
+        [1,5,9], [3,5,7]];
 
-function getGame() {
-  var divs = [];
-  for (var i=0;i<9;i++) {
-    divs.push([$(choices[i]).html(),i]);
-  }
-  return divs;
-}
+    this.go = function() {
+      moveCount = 9;
+      running = false;
+      playerPiece = "";
+      computerPiece = "";
+      playerMoves = [];
+      computerMoves = [];
+      playerTurn = false;
+      winner = "";
+      chooseButtons.off("click");
+      spaces.off("click");
+      spaces.html("");
+      choosePiece();
+    };
 
-function convertGameToGrid(game) {
-  var divs = [];
-  for (var i=0;i<game.length;i++) {
-    divs.push(game[i][0]);
-  }
-  return divs;
-}
-
-function checkGrid(divs) {
-  var options = [[divs[0],divs[1],divs[2]],
-    [divs[3],divs[4],divs[5]],
-    [divs[6],divs[7],divs[8]],
-    [divs[0],divs[3],divs[6]],
-    [divs[1],divs[4],divs[7]],
-    [divs[2],divs[5],divs[8]],
-    [divs[0],divs[4],divs[8]],
-    [divs[2],divs[4],divs[6]]];
-
-  for (var i=0;i<options.length;i++) {
-    if (options[i][0] == 'X' && options[i][1] == 'X' && options[i][2] == 'X') {
-      return 'X';
-    } else if (options[i][0] == 'O' && options[i][1] == 'O' && options[i][2] == 'O') {
-      return 'O';
-    }
-  }
-  for (var i=0;i<9;i++) {
-    if (divs[i]=='') {
-      return false;
-    }
-  }
-  return 'Draw';
-}
-
-function resetGrid() {
-  for (var i=0;i<9;i++) {
-    $(choices[i]).html('');
-  }
-  $('#result').html('');
-  if (ai=='X') {
-    $('#mm').html('X');
-  }
-}
-
-function displayLine(divs) {
-  var options = [[divs[0],divs[1],divs[2]],
-    [divs[3],divs[4],divs[5]],
-    [divs[6],divs[7],divs[8]],
-    [divs[0],divs[3],divs[6]],
-    [divs[1],divs[4],divs[7]],
-    [divs[2],divs[5],divs[8]],
-    [divs[0],divs[4],divs[8]],
-    [divs[2],divs[4],divs[6]]];
-
-  for (var i=0;i<options.length;i++) {
-    if ((options[i][0] == 'X' && options[i][1] == 'X' && options[i][2] == 'X') || (options[i][0] == 'O' && options[i][1] == 'O' && options[i][2] == 'O')){
-      if (i==0) {
-        $('#win4').show();
-        setTimeout(function(){$('#win4').hide()},1000);
-        break;
-      } else if (i==1) {
-        $('#win5').show();
-        setTimeout(function(){$('#win5').hide()},1000);
-        break;
-      } else if (i==2) {
-        $('#win6').show()
-        setTimeout(function(){$('#win6').hide()},1000);
-        break;
-      } else if (i==3) {
-        $('#win1').show();
-        setTimeout(function(){$('#win1').hide()},1000);
-        break;
-      } else if (i==4) {
-        $('#win2').show();
-        setTimeout(function(){$('#win2').hide()},1000);
-        break;
-      } else if (i==5) {
-        $('#win3').show();
-        setTimeout(function(){$('#win3').hide()},1000);
-        break;
-      } else if (i==6) {
-        $('#win7').show();
-        setTimeout(function(){$('#win7').hide()},1000);
-        break;
-      } else if (i==7) {
-        $('#win8').show();
-        setTimeout(function(){$('#win8').hide()},1000);
-        break;
+    function startGame() {
+      running = true;
+      if (!playerTurn) {
+        setTimeout(makeComputerMove, 400);
       }
-    }
-  }
-}
+      spaces.click(function() {
+        if (occupiedSpaces().indexOf(positionNumber($(this))) !== -1 ) return;
 
-function playerTurn(i){
-  return function() {
-    var g = getGrid();
-    var cG = checkGrid(g);
-    if (!cG) {
-      if ($(choices[i]).html()=='') {
-        $(choices[i]).html(player);
-        var g = getGrid();
-        var cG = checkGrid(g);
-        if (cG==player) {
-          $('#result').html('You Win!');
-          displayLine(g);
-          setTimeout(function(){resetGrid()},1000);
-          console.log('You win');
-        } else if (cG=='Lose') {
-          $('#result').html('You Lose!');
-          setTimeout(function(){resetGrid()},1000);
-          console.log('Lose');
-        } else {
-          aiTurn();
+        if (running && playerTurn) {
+          $(this).html("<p class='player'>" + playerPiece + "<p/>");
+          playerMoves.push(positionNumber($(this)));
+          if (checkForWin(playerMoves)) {
+            setTimeout(function() {
+              winner = "player";
+              running = false;
+              announce.text("You won!");
+              currentPosition.go();
+            }, 600);
+            return;
+          }
+          moveCount --;
+          if (moveCount === 0) {
+            setTimeout(function() {
+              winner = "draw";
+              running = false;
+              announce.text("Draw!");
+              currentPosition.go();
+            }, 600);
+            return;
+          }
+          playerTurn = false;
+          setTimeout(makeComputerMove, 600);
         }
+      });
+    }
+
+    function makeComputerMove() {
+      if (running && !playerTurn) {
+        var avail = openSpaces();
+        var movedYet = false;
+        var win_test = [];
+        var block_test = [];
+        var potentials = [];
+        for (var i = 0; i < avail.length; i++) {
+          computerMoves.forEach(function(num) {
+            win_test.push(num);
+          });
+          win_test.push(avail[i]);
+          if (checkForWin(win_test)) {
+            movedYet = true;
+            placeComputerPiece(avail[i]);
+            break;
+          }
+          win_test = [];
+        }
+        if (!movedYet) {
+          for (var j = 0; j < avail.length; j++) {
+            playerMoves.forEach(function(num) {
+              block_test.push(num);
+            });
+            block_test.push(avail[j]);
+            if (checkForWin(block_test)) {
+              movedYet = true;
+              placeComputerPiece(avail[j]);
+              break;
+            }
+            block_test = [];
+          }
+        }
+        if (!movedYet) {
+          if (computerMoves.length > 0) {
+            computerMoves.forEach(function(compMove) {
+              winConditions.forEach(function(winCond) {
+                if (winCond.indexOf(compMove) > -1) potentials.push(winCond);
+              });
+            });
+          } else {
+            potentials = winConditions;
+          }
+
+          if (potentials.length > 0) {
+            potentials = potentials.reduce(function(a,b) {
+              return a.concat(b);
+            });
+            potentials = potentials.filter(function(potential) {
+              return avail.includes(potential);
+            });
+          }
+          placeComputerPiece(sortByFreq(potentials)[0]);
+        }
+
+        if (checkForWin(computerMoves)) {
+          setTimeout(function() {
+            winner = "computer";
+            running = false;
+            announce.text("Computer Wins!");
+            currentPosition.go();
+          }, 600);
+          return;
+        }
+        moveCount --;
+        if (moveCount === 0) {
+          setTimeout(function() {
+            winner = "draw";
+            running = false;
+            announce.text("Draw!");
+            currentPosition.go();
+          }, 600);
+          return;
+        }
+        playerTurn = true;
+      }
+
+      function sortByFreq(arr) {
+        var frequency = {};
+        arr.forEach(function(value) {
+          frequency[value] = 0;
+        });
+        var uniques = arr.filter(function(value) {
+          return ++frequency[value] == 1;
+        });
+        return uniques.sort(function(a, b) {
+          return frequency[b] - frequency[a];
+        });
+      }
+
+      function placeComputerPiece(num) {
+        var location = $(".position-" + num);
+        location.html("<p class='computer'>" + computerPiece + "</p>");
+        computerMoves.push(num);
       }
     }
-  }
-}
 
-function score(g, depth) {
-  var cG = checkGrid(g);
-  if (cG == ai) {
-    return 10-depth;
-  } else if (cG == player) {
-    return depth-10;
-  } else {
-    return 0;
-  }
-}
-
-function minimax(game,depth) {
-  var g = convertGameToGrid(game);
-  if (checkGrid(g)) {
-    var s = score(g,depth);
-    return s;
-  }
-  depth += 1;
-  var scores = [];
-  var moves = [];
-
-  var availMoves = getAvailMoves(game);
-  for (var i=0;i<availMoves.length;i++) {
-    var possibleGame = [];
-    for (var j=0;j<9;j++) {
-      possibleGame.push(game[j]);
+    function checkForWin(moves) {
+      var result = false;
+      if (moves.length < 3) return false;
+      winConditions.forEach(function(winArr) {
+        var tmpArr = winArr.filter(function(winNum) {
+          if (moves.indexOf(winNum) > -1) return false;
+          return true;
+        });
+        if (tmpArr.length === 0) result = true;
+      });
+      return result;
     }
 
-    if (depth%2==0) {
-      possibleGame.splice(availMoves[i],1,[ai,availMoves[i]]);
+    function choosePiece() {
+      if (!running) {
+        overlay.toggle("clip");
+        chooseButtons.on("click", function() {
+          playerPiece = $(this).text();
+          computerPiece = ["X", "O"].filter(function(elem) { return elem !== playerPiece })[0];
+          if (playerPiece === "X") playerTurn = true;
+          overlay.toggle("clip");
+          startGame();
+        });
+      }
+    }
+
+    function openSpaces() {
+      var possible = [1,2,3,4,5,6,7,8,9];
+      occupiedSpaces().forEach(function(num) {
+        possible = possible.filter(function(val) {
+          if (val === num) return false;
+          return true;
+        });
+      });
+      return possible;
+    }
+
+    function occupiedSpaces() {
+      return playerMoves.concat(computerMoves);
+    }
+
+    function positionNumber(div) {
+      return parseInt(div.attr('class').split(' ')[1].split('-')[1]);
+    }
+
+  }
+
+  function displayBoard() {
+    var margin;
+    var winHeight = $(window).height();
+    var boardWidth = $('.gameboard').width();
+    $('.gameboard').height(boardWidth);
+    if ( winHeight > boardWidth) {
+      margin = (winHeight - boardWidth) / 2;
+      $('.gameboard').css('margin-top', margin + 'px');
     } else {
-      possibleGame.splice(availMoves[i],1,[player,availMoves[i]]);
-    }
-    var m = minimax(possibleGame,depth);
-    scores.push(m);
-    moves.push(availMoves[i]);
-  }
-
-  if (depth%2==0) {
-    var max_score_index = 0;
-    var max_score = -100000000;
-    for (var i=0;i<scores.length;i++) {
-      if (scores[i] > max_score) {
-        max_score_index = i;
-        max_score = scores[i];
-      }
-    }
-    if (depth==0) {
-      return moves[max_score_index];
-    } else {
-      return scores[max_score_index];
-    }
-  } else {
-    var min_score_index = 0;
-    var min_score = 100000000;
-    for (var i=0;i<scores.length;i++) {
-      if (scores[i] < min_score) {
-        min_score_index = i;
-        min_score = scores[i];
-      }
-    }
-    return scores[min_score_index];
-  }
-}
-
-function getAvailMoves(game) {
-  var moves = [];
-  for (var i=0;i<game.length;i++) {
-    if (game[i][0] == '') {
-      moves.push(game[i][1]);
+      $('.gameboard').css('margin-top', '20px');
     }
   }
-  return moves;
-}
 
-function aiTurn () {
+  displayBoard();
 
-  console.log('ai');
-  var c;
-  game = getGame();
-  c = minimax(game,-1);
-
-  $(choices[c]).html(ai);
-  var g = getGrid();
-  var cG = checkGrid(g);
-  if (cG==ai) {
-    $('#result').html('You Lose :(');
-    displayLine(g);
-    setTimeout(function(){resetGrid()},1000);
-    console.log('You lose');
-  } else if (cG=='Lose') {
-    $('#result').html('You Win!');
-    setTimeout(function(){resetGrid()},1000);
-    console.log('Win');
-  }
-}
-
-
-var player='X';
-var ai = 'O';
-
-$(document).ready(function () {
-
-  for(var i = 0; i < 9; i++) {
-    $(choices[i]).on('click', playerTurn(i));
-  }
-
-  $('#myModal').modal('show');
-
-  $('#chooseX').on('click',function() {
-    player='X';
-    ai='O';
-    $('#myModal').modal('hide');
+  $(window).resize(function() {
+    displayBoard();
   });
-  $('#chooseO').on('click',function() {
-    player='O';
-    ai='X';
-    $('#myModal').modal('hide');
-    $('#mm').html('X');
-  });
+
+  var ticTacToe = new Game();
+  ticTacToe.go();
+
 });

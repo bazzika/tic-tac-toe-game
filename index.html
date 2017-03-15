@@ -11,58 +11,34 @@
 </head>
 <body>
 <div class="container">
-    <div id="content">
-        <div id="title">Tic Tac Toe Game</div>
-
-        <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Click button</h4>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="gameboard">
+                <div class="overlay">
+                    <div class="overlay-content">
+                        <h2 class="game-title">tic-tac-toe</h2>
+                        <button class="piece-select">X</button>
+                        <button class="piece-select">O</button>
                     </div>
-                    <div class="modal-body">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" id="chooseX">X</button>
-                        <br>
-                        <br>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" id="chooseO">O</button>
-                    </div>
+                </div>
+                <div class="row">
+                    <div class="ttt-space position-1 col-xs-4"></div>
+                    <div class="ttt-space position-2 col-xs-4"></div>
+                    <div class="ttt-space position-3 col-xs-4"></div>
+                </div>
+                <div class="row">
+                    <div class="ttt-space position-4 col-xs-4"></div>
+                    <div class="ttt-space position-5 col-xs-4"></div>
+                    <div class="ttt-space position-6 col-xs-4"></div>
+                </div>
+                <div class="row">
+                    <div class="ttt-space position-7 col-xs-4"></div>
+                    <div class="ttt-space position-8 col-xs-4"></div>
+                    <div class="ttt-space position-9 col-xs-4"></div>
                 </div>
             </div>
         </div>
-
-
-        <div id="ttt-box">
-            <div id="l1"></div>
-            <div id="l2"></div>
-            <div id="l3"></div>
-            <div id="l4"></div>
-
-            <div id="win1"></div>
-            <div id="win2"></div>
-            <div id="win3"></div>
-            <div id="win4"></div>
-            <div id="win5"></div>
-            <div id="win6"></div>
-            <div id="win7"></div>
-            <div id="win8"></div>
-
-            <div id="boxes">
-                <div id="cell_1"></div>
-                <div id="cell_2"></div>
-                <div id="cell_3"></div>
-                <div id="cell_4"></div>
-                <div id="cell_5"></div>
-                <div id="cell_6"></div>
-                <div id="cell_7"></div>
-                <div id="cell_8"></div>
-                <div id="cell_9"></div>
-            </div>
-
-        </div>
-
-        <div id="result"></div>
     </div>
-
     <footer class="text-center">
         <p>bazzika</p>
     </footer>
